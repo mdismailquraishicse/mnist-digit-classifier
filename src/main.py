@@ -8,6 +8,7 @@ def main():
 
     print("Hello from mnist-digit-classifier!")
     trainer.train(epochs=epochs)
+    trainer.evaluate()
 
 
 if __name__ == "__main__":
