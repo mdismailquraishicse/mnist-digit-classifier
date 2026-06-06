@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from src.mnist_digit_classifier import DigitClassifier
+from mnist_digit_classifier import DigitClassifier
 
 
 epoches = 5
@@ -40,17 +40,19 @@ def main():
     )
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr = 0.1)
+    optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
 
     for epoch in range(epoches):
-        
+        model.train(mode = True)
+        total_loss = 0
         for images, labels in train_loader:
-            outputs = model(images, labels)
+            outputs = model(images)
             loss = criterion(outputs, labels)
+            total_loss += loss.item()
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        print(f"Epoch: {epoch + 1} loss: {loss}")
+        print(f"Epoch: {epoch + 1} loss: {total_loss/len(train_loader):.4f}")
 
 
 if __name__ == "__main__":
